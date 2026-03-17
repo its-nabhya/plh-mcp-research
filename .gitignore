@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+.ipynb_checkpoints/
+
+# Data (VERY IMPORTANT)
+data/logs/
+data/labeled/
+data/features/
+
+# OS
+.DS_Store
