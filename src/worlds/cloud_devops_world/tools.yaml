@@ -1,0 +1,46 @@
+tools:
+  - name: deploy_service
+    description: Deploy a service version into an environment.
+    parameters:
+      service: {type: string, required: true}
+      version: {type: string, required: true}
+      environment: {type: string, required: true}
+    returns: {type: object}
+    permissions: [devops, admin]
+    preconditions: [service exists, dependencies healthy]
+  - name: get_logs
+    description: Fetch deterministic service log lines.
+    parameters:
+      service: {type: string, required: true}
+      environment: {type: string, required: true}
+      lines: {type: integer, required: false}
+    returns: {type: array}
+    permissions: [developer, devops, admin]
+    preconditions: [service exists]
+  - name: scale_service
+    description: Set replica count for a service.
+    parameters:
+      service: {type: string, required: true}
+      replicas: {type: integer, required: true}
+      environment: {type: string, required: true}
+    returns: {type: object}
+    permissions: [devops, admin]
+    preconditions: [service deployed in environment]
+  - name: rollback_deployment
+    description: Rollback service to a prior deployment id.
+    parameters:
+      service: {type: string, required: true}
+      deployment_id: {type: string, required: true}
+      environment: {type: string, required: true}
+    returns: {type: object}
+    permissions: [devops, admin]
+    preconditions: [deployment_id must exist]
+deprecated_tools:
+  - name: tail_logs
+    replacement: get_logs
+traps:
+  tool_existence: [tail_logs, restart_cluster]
+  capability: [get_logs cannot deploy]
+  parameter: [replicas as string, invalid environment]
+  permission: [developer cannot deploy_service]
+  semantic: [rollback called for scaling request]

@@ -16,7 +16,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.logging.schema import PromptInfo
 from src.pipeline.run_agent_loop import AgentLoop, AgentLoopConfig
-from src.worlds.micro_world.world import create_micro_world
+from src.worlds import WORLD_FACTORIES
+from src.prompts.world_prompt_banks import PROMPTS_BY_WORLD
 
 
 # ---------------------------------------------------------------------------
@@ -142,7 +143,7 @@ PROMPT_BANK = [
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Run PLH data collection pipeline.")
-    p.add_argument("--world", default="micro_world", choices=["micro_world"],
+    p.add_argument("--world", default="micro_world", choices=list(WORLD_FACTORIES.keys()),
                    help="Which MCP world to use.")
     p.add_argument("--mode", default="mock", choices=["mock", "live"],
                    help="mock = MockAgent (no API), live = use a real LLM provider.")
@@ -242,8 +243,9 @@ def main():
     args = parse_args()
 
     # World
-    world = create_micro_world(role=args.role)
-    prompts = PROMPT_BANK[: args.num] if args.num else PROMPT_BANK
+    world = WORLD_FACTORIES[args.world](role=args.role)
+    bank = PROMPTS_BY_WORLD.get(args.world, PROMPT_BANK)
+    prompts = bank[: args.num] if args.num else bank
 
     # Agent
     if args.mode == "live":

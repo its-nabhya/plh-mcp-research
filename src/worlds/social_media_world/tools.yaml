@@ -1,0 +1,42 @@
+tools:
+  - name: post_message
+    description: Publish a post for a user.
+    parameters:
+      user_id: {type: string, required: true}
+      text: {type: string, required: true}
+      visibility: {type: string, required: false}
+    returns: {type: object}
+    permissions: [user, moderator, admin]
+    preconditions: [user must exist]
+  - name: get_feed
+    description: Retrieve timeline posts for a user.
+    parameters:
+      user_id: {type: string, required: true}
+      limit: {type: integer, required: false}
+    returns: {type: array}
+    permissions: [user, moderator, admin]
+    preconditions: [user must exist]
+  - name: follow_user
+    description: Create follow relationship.
+    parameters:
+      follower_id: {type: string, required: true}
+      target_id: {type: string, required: true}
+    returns: {type: object}
+    permissions: [user, admin]
+    preconditions: [both users must exist]
+  - name: send_message
+    description: Send private direct message.
+    parameters:
+      sender_id: {type: string, required: true}
+      recipient_id: {type: string, required: true}
+      text: {type: string, required: true}
+    returns: {type: object}
+    permissions: [user, admin]
+    preconditions: [recipient accepts messages]
+deprecated_tools: []
+traps:
+  tool_existence: [message_user, repost_message]
+  capability: [get_feed cannot send message]
+  parameter: [missing recipient_id, invalid text type]
+  permission: [moderator cannot send_message]
+  semantic: [follow_user used to publish post]
