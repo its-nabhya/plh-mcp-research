@@ -1,0 +1,139 @@
+tools:
+  - name: "add_numbers"
+    description: "Add two numbers together and return the sum"
+    parameters:
+      a:
+        type: "number"
+        required: true
+        description: "First number"
+      b:
+        type: "number"
+        required: true
+        description: "Second number"
+    returns:
+      type: "number"
+      description: "Sum of a and b"
+    permissions: ["user", "admin"]
+    preconditions: []
+
+  - name: "subtract_numbers"
+    description: "Subtract the second number from the first"
+    parameters:
+      a:
+        type: "number"
+        required: true
+        description: "Minuend"
+      b:
+        type: "number"
+        required: true
+        description: "Subtrahend"
+    returns:
+      type: "number"
+      description: "Difference (a - b)"
+    permissions: ["user", "admin"]
+    preconditions: []
+
+  - name: "multiply_numbers"
+    description: "Multiply two numbers and return the product"
+    parameters:
+      a:
+        type: "number"
+        required: true
+        description: "First number"
+      b:
+        type: "number"
+        required: true
+        description: "Second number"
+    returns:
+      type: "number"
+      description: "Product of a and b"
+    permissions: ["user", "admin"]
+    preconditions: []
+
+  - name: "divide_numbers"
+    description: "Divide the first number by the second. Divisor must not be zero."
+    parameters:
+      a:
+        type: "number"
+        required: true
+        description: "Dividend"
+      b:
+        type: "number"
+        required: true
+        description: "Divisor (non-zero)"
+    returns:
+      type: "number"
+      description: "Quotient (a / b)"
+    permissions: ["user", "admin"]
+    preconditions:
+      - "b must not be zero"
+
+  - name: "concatenate_strings"
+    description: "Concatenate two strings, with an optional separator"
+    parameters:
+      s1:
+        type: "string"
+        required: true
+        description: "First string"
+      s2:
+        type: "string"
+        required: true
+        description: "Second string"
+      separator:
+        type: "string"
+        required: false
+        default: ""
+        description: "Optional separator between strings"
+    returns:
+      type: "string"
+      description: "Concatenated result"
+    permissions: ["user", "admin"]
+    preconditions: []
+
+  - name: "get_string_length"
+    description: "Return the character count of a string"
+    parameters:
+      s:
+        type: "string"
+        required: true
+        description: "Input string"
+    returns:
+      type: "integer"
+      description: "Number of characters"
+    permissions: ["user", "admin"]
+    preconditions: []
+
+  - name: "list_tools"
+    description: "List all tool names available in this world"
+    parameters: {}
+    returns:
+      type: "array"
+      description: "Array of tool name strings"
+    permissions: ["user", "admin"]
+    preconditions: []
+
+  - name: "describe_tool"
+    description: "Return the full schema of a named tool"
+    parameters:
+      tool_name:
+        type: "string"
+        required: true
+        description: "Name of the tool to describe"
+    returns:
+      type: "object"
+      description: "Full tool definition"
+    permissions: ["user", "admin"]
+    preconditions:
+      - "tool_name must exist in the registry"
+
+  - name: "get_world_metadata"
+    description: "Return metadata about this MCP world (name, version, complexity)"
+    parameters: {}
+    returns:
+      type: "object"
+      description: "World metadata object"
+    permissions: ["user", "admin"]
+    preconditions: []
+
+deprecated_tools: []
+traps: []

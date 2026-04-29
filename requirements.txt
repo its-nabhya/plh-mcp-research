@@ -7,3 +7,19 @@ uvicorn
 tqdm
 matplotlib
 sentence-transformers
+# Core
+anthropic>=0.25.0
+pyyaml>=6.0
+numpy>=1.24.0
+
+# ML & Feature Extraction
+scikit-learn>=1.3.0
+
+# Testing
+pytest>=7.4.0
+
+# Optional: advanced models (install separately if needed)
+# torch>=2.0.0
+sentence-transformers>=2.2.2
+# faiss-cpu>=1.7.4
+xgboost>=1.7.0
