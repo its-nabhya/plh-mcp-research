@@ -1,0 +1,38 @@
+tools:
+  - name: search_product
+    description: Search catalog by keyword.
+    parameters:
+      query: {type: string, required: true}
+    returns: {type: array}
+    permissions: [user, support, admin]
+    preconditions: []
+  - name: add_to_cart
+    description: Add a product unit to user cart.
+    parameters:
+      product_id: {type: string, required: true}
+      quantity: {type: integer, required: true}
+    returns: {type: object}
+    permissions: [user, admin]
+    preconditions: [product_id must exist, quantity > 0]
+  - name: checkout
+    description: Place an order from current cart.
+    parameters:
+      address_id: {type: string, required: true}
+      payment_token: {type: string, required: true}
+    returns: {type: object}
+    permissions: [user, admin]
+    preconditions: [cart must be non-empty]
+  - name: track_order
+    description: Get shipping status by order id.
+    parameters:
+      order_id: {type: string, required: true}
+    returns: {type: object}
+    permissions: [user, support, admin]
+    preconditions: [order_id must exist]
+deprecated_tools: []
+traps:
+  tool_existence: [find_product, place_order]
+  capability: [search_product cannot mutate cart]
+  parameter: [quantity as string, missing payment_token]
+  permission: [support cannot checkout]
+  semantic: [track_order used to add product]

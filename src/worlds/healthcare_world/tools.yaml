@@ -1,0 +1,43 @@
+tools:
+  - name: get_patient_record
+    description: Retrieve a patient demographic and medication record.
+    parameters:
+      patient_id: {type: string, required: true}
+    returns: {type: object}
+    permissions: [doctor, nurse, admin]
+    preconditions: [patient_id must exist]
+  - name: prescribe_medication
+    description: Add a medication order to a patient record.
+    parameters:
+      patient_id: {type: string, required: true}
+      medication: {type: string, required: true}
+      dose_mg: {type: number, required: true}
+    returns: {type: object}
+    permissions: [doctor, admin]
+    preconditions: [patient_id must exist]
+  - name: schedule_appointment
+    description: Schedule a patient appointment.
+    parameters:
+      patient_id: {type: string, required: true}
+      datetime: {type: string, required: true}
+      clinician_id: {type: string, required: true}
+    returns: {type: object}
+    permissions: [doctor, nurse, admin]
+    preconditions: [patient_id must exist, slot must be free]
+  - name: get_lab_results
+    description: Retrieve lab results for a patient.
+    parameters:
+      patient_id: {type: string, required: true}
+      panel: {type: string, required: false}
+    returns: {type: object}
+    permissions: [doctor, nurse, admin]
+    preconditions: [patient_id must exist]
+deprecated_tools:
+  - name: book_visit
+    replacement: schedule_appointment
+traps:
+  tool_existence: [book_visit, update_patient_profile]
+  capability: [prescribe_medication cannot schedule visits]
+  parameter: [invalid patient_id, wrong datetime format, extra params]
+  permission: [nurse cannot prescribe_medication]
+  semantic: [use schedule_appointment to request lab values]
